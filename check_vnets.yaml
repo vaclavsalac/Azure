@@ -1,0 +1,53 @@
+trigger: none
+# - main
+
+schedules:
+# Cron schedule - Every 30 minutes 24/7/365 - same as '0,30 * * * *'
+- cron: '0,30 0-23 1-31 JAN-DEC SUN-SAT'
+  displayName: 30 Minutes Build
+  branches:
+    include:
+    - main
+  always: true
+
+variables:  
+  - template: vars.yml
+
+stages:
+  - stage: Build
+    pool:
+      vmImage: windows-latest
+    variables:
+      - name: 'PERSONALACCESSTOKEN'
+        value: ${{ variables.personalAccessToken }}
+    jobs:
+
+# id1
+    - job: ${{ variables.id1_name }}
+      displayName: Powershell Script Execute
+      variables:
+        - name: 'SUBSCRIPTION'
+          value: ${{ variables.id1_subscription }}
+      steps:
+        - task: AzurePowerShell@5
+          inputs:
+            azureSubscription: ${{ variables.id1_serviceConnection }}
+            scriptType: filePath
+            scriptPath: ./check-vnets.ps1
+            azurePowerShellVersion: latestVersion
+            pwsh: true
+
+# id2
+    - job: ${{ variables.id2_name }}
+      displayName: Powershell Script Execute
+      variables:
+        - name: 'SUBSCRIPTION'
+          value: ${{ variables.id2_subscription }}
+      steps:  
+        - task: AzurePowerShell@5
+          inputs:
+            azureSubscription: ${{ variables.id2_serviceConnection }}
+            scriptType: filePath
+            scriptPath: ./check-vnets.ps1
+            azurePowerShellVersion: latestVersion
+            pwsh: true

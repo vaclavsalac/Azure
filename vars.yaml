@@ -1,0 +1,20 @@
+# dateOfBackup format yyyyMMdd - 20241231
+# Azure DevOps Personat Access Token (PAT) - PSRestore
+
+variables:
+  blobAgeThreshold: 1
+  personalAccessToken: 'wqd24jarnp0aq4wfq6k8rtg04luwl4yqwep44e7kyakzraxg7bfg4r'
+
+# id1
+  id1_name: 'VSPayAsYouGo'
+  id1_serviceConnection: 'Azure-DEV'
+  id1_subscription: 'VS-PayAsYouGo'
+  id1_storageAccount: 'vssa1'
+  id1_datOfBackup: '*'
+
+# id2  
+  id2_name: 'TFPayAsYouGo'
+  id2_serviceConnection: 'Azure-IAC-SP-SC'
+  id2_subscription: 'TF-PayAsYouGo'
+  id2_storageAccount: 'tfsa1'
+  id2_datOfBackup: '*'
