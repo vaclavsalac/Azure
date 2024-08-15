@@ -1,0 +1,155 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-09-01",
+      "name": "VS-NSG-1",
+      "location": "westeurope",
+      "properties": {
+        "securityRules": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "2023-09-01",
+      "name": "VS-RT-1",
+      "location": "westeurope",
+      "properties": {
+        "disableBgpRoutePropagation": false,
+        "routes": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2023-09-01",
+      "name": "VS-VNet-1",
+      "location": "westeurope",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/routeTables', 'VS-RT-1')]"
+      ],
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.0.0.0/16"
+          ]
+        },
+        "encryption": {
+          "enabled": false,
+          "enforcement": "AllowUnencrypted"
+        },
+        "subnets": [
+          {
+            "name": "default",
+            "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'VS-VNet-1', 'default')]",
+            "properties": {
+              "addressPrefix": "10.0.0.0/24",
+              "routeTable": {
+                "id": "[resourceId('Microsoft.Network/routeTables', 'VS-RT-1')]"
+              },
+              "delegations": [],
+              "privateEndpointNetworkPolicies": "Disabled",
+              "privateLinkServiceNetworkPolicies": "Enabled"
+            },
+            "type": "Microsoft.Network/virtualNetworks/subnets"
+          },
+          {
+            "name": "default2",
+            "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'VS-VNet-1', 'default2')]",
+            "properties": {
+              "addressPrefixes": [
+                "10.0.1.0/24"
+              ],
+              "routeTable": {
+                "id": "[resourceId('Microsoft.Network/routeTables', 'VS-RT-1')]"
+              },
+              "delegations": [],
+              "privateEndpointNetworkPolicies": "Disabled",
+              "privateLinkServiceNetworkPolicies": "Enabled"
+            },
+            "type": "Microsoft.Network/virtualNetworks/subnets"
+          },
+          {
+            "name": "default3",
+            "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'VS-VNet-1', 'default3')]",
+            "properties": {
+              "addressPrefixes": [
+                "10.0.2.0/24"
+              ],
+              "routeTable": {
+                "id": "[resourceId('Microsoft.Network/routeTables', 'VS-RT-1')]"
+              },
+              "delegations": [],
+              "privateEndpointNetworkPolicies": "Disabled",
+              "privateLinkServiceNetworkPolicies": "Enabled"
+            },
+            "type": "Microsoft.Network/virtualNetworks/subnets"
+          }
+        ],
+        "virtualNetworkPeerings": [],
+        "enableDdosProtection": false
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2023-09-01",
+      "name": "VS-VNet-1/default",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'VS-VNet-1')]",
+        "[resourceId('Microsoft.Network/routeTables', 'VS-RT-1')]"
+      ],
+      "properties": {
+        "addressPrefix": "10.0.0.0/24",
+        "routeTable": {
+          "id": "[resourceId('Microsoft.Network/routeTables', 'VS-RT-1')]"
+        },
+        "delegations": [],
+        "privateEndpointNetworkPolicies": "Disabled",
+        "privateLinkServiceNetworkPolicies": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2023-09-01",
+      "name": "VS-VNet-1/default2",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'VS-VNet-1')]",
+        "[resourceId('Microsoft.Network/routeTables', 'VS-RT-1')]"
+      ],
+      "properties": {
+        "addressPrefixes": [
+          "10.0.1.0/24"
+        ],
+        "routeTable": {
+          "id": "[resourceId('Microsoft.Network/routeTables', 'VS-RT-1')]"
+        },
+        "delegations": [],
+        "privateEndpointNetworkPolicies": "Disabled",
+        "privateLinkServiceNetworkPolicies": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2023-09-01",
+      "name": "VS-VNet-1/default3",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'VS-VNet-1')]",
+        "[resourceId('Microsoft.Network/routeTables', 'VS-RT-1')]"
+      ],
+      "properties": {
+        "addressPrefixes": [
+          "10.0.2.0/24"
+        ],
+        "routeTable": {
+          "id": "[resourceId('Microsoft.Network/routeTables', 'VS-RT-1')]"
+        },
+        "delegations": [],
+        "privateEndpointNetworkPolicies": "Disabled",
+        "privateLinkServiceNetworkPolicies": "Enabled"
+      }
+    }
+  ]
+}
