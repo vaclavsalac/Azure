@@ -1,0 +1,24 @@
+{
+  "VNetsRG": [
+    {
+      "Name": "VS-RG-1",
+      "Subscription": "VS-PayAsYouGo",
+      "Location": "westeurope"
+    },
+    {
+      "Name": "VS-RG-2",
+      "Subscription": "VS-PayAsYouGo",
+      "Location": "westeurope"
+    },
+    {
+      "Name": "VS-RG-3",
+      "Subscription": "TF-PayAsYouGo",
+      "Location": "westeurope"
+    },
+    {
+      "Name": "VS-RG-4",
+      "Subscription": "VS-PayAsYouGo",
+      "Location": "westeurope"
+    }
+  ]
+}
